@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サンリフォーム AIツール ポータル</title>
+  <style>
+    :root {
+      --bg: #FAFBFC;
+      --surface: #FFFFFF;
+      --surface-alt: #F5F7F9;
+      --neutral-faint: #EEF1F4;
+      --neutral-border: #DDE2E7;
+      --neutral-strong: #B0B7BF;
+      --text-muted: #6B7480;
+      --text: #2C3138;
+      --text-strong: #1A1F26;
+      --success: #2E8B6B;
+      --success-faint: #E8F3EE;
+      --warn: #C77A1F;
+      --warn-faint: #FBF1E2;
+      --danger: #C04A3D;
+      --danger-faint: #F8E8E5;
+      --info: #2A6FB0;
+      --info-faint: #E5EFF8;
+      --radius-sm: 2px;
+      --radius: 4px;
+      --radius-lg: 8px;
+      --radius-pill: 999px;
+      --space-1: 4px;
+      --space-2: 6px;
+      --space-3: 8px;
+      --space-4: 12px;
+      --space-5: 16px;
+      --space-6: 24px;
+      --space-7: 32px;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                     "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+                     "Meiryo", sans-serif;
+      --fs-xs: 11px;
+      --fs-sm: 12px;
+      --fs-base: 13px;
+      --fs-md: 14px;
+      --fs-lg: 15px;
+      --fs-xl: 17px;
+      --fs-h: 22px;
+      --shadow-sm: 0 1px 2px rgba(20, 30, 50, 0.04);
+      --shadow: 0 2px 6px rgba(20, 30, 50, 0.06);
+      --t-fast: 0.12s ease;
+      --t-base: 0.2s ease;
+      --primary: #C97A2E;
+      --primary-dark: #9C5C1F;
+      --primary-faint: #FAEFDD;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family);
+      font-size: var(--fs-base);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--neutral-border);
+      padding: var(--space-4) var(--space-7);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-size: var(--fs-xl);
+      font-weight: 600;
+      color: var(--text-strong);
+    }
+
+    header h1::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    header .subtitle {
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    .header-left { display: flex; flex-direction: column; gap: 2px; }
+
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: var(--space-7) var(--space-6);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--fs-md);
+      font-weight: 600;
+      color: var(--text-strong);
+      margin-bottom: var(--space-5);
+    }
+
+    .section-title::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 16px;
+      background: var(--primary);
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    section { margin-bottom: var(--space-7); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-5);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--neutral-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .card.interactive {
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color var(--t-fast), box-shadow var(--t-fast);
+    }
+
+    .card.interactive:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+
+    .card-title {
+      font-size: var(--fs-md);
+      font-weight: 600;
+      color: var(--text-strong);
+      line-height: var(--lh-tight, 1.4);
+    }
+
+    .card-desc {
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-top: auto;
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--neutral-faint);
+    }
+
+    .card-access {
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    /* chips */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--space-3);
+      border-radius: var(--radius-pill);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .chip-success { background: var(--success-faint); color: var(--success); }
+    .chip-info    { background: var(--info-faint);    color: var(--info); }
+    .chip-warn    { background: var(--warn-faint);    color: var(--warn); }
+    .chip-muted   { background: var(--neutral-faint); color: var(--text-muted); }
+    .chip-primary { background: var(--primary-faint); color: var(--primary-dark); }
+
+    /* btn */
+    .btn {
+      height: 28px;
+      padding: 0 12px;
+      font-size: var(--fs-sm);
+      border: 1px solid var(--neutral-border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: var(--radius);
+      transition: var(--t-fast);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn:hover { background: var(--surface-alt); border-color: var(--neutral-strong); }
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+
+    .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius);
+      background: var(--primary-faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .auto-badge {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+    }
+
+    .auto-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: var(--space-4) var(--space-5); }
+      main { padding: var(--space-6) var(--space-5); }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>サンリフォーム AIツール ポータル</h1>
+    <div class="subtitle">株式会社サンリフォーム — 社内開発ツール一覧</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Webアプリ -->
+  <section>
+    <div class="section-title">Webアプリ</div>
+    <div class="grid">
+
+      <a class="card interactive" href="https://sunaidxpj.github.io/sunreform-app/" target="_blank" rel="noopener">
+        <div class="card-header">
+          <div class="icon">&#x1F4CA;</div>
+          <span class="chip chip-success">稼働中</span>
+        </div>
+        <div class="card-title">38期 昇降格査定システム</div>
+        <div class="card-desc">昇降格査定の3フェーズ管理（上長入力 → 会議 → 役員会）。68名対象。Kintone と連携してデータ集計・CSV出力が可能。</div>
+        <div class="card-footer">
+          <span class="card-access">sunaidxpj.github.io/sunreform-app</span>
+          <span class="btn btn-primary">開く ↗</span>
+        </div>
+      </a>
+
+      <a class="card interactive" href="https://sunaidxpj.github.io/sunreform-mansion-app/" target="_blank" rel="noopener">
+        <div class="card-header">
+          <div class="icon">&#x1F3E2;</div>
+          <span class="chip chip-success">稼働中</span>
+        </div>
+        <div class="card-title">マンション検索</div>
+        <div class="card-desc">管理マンションの物件情報・申し送り事項を横断検索。Firestore と連携。SUN-Bo の申し送りキャプチャ機能と連動。</div>
+        <div class="card-footer">
+          <span class="card-access">sunaidxpj.github.io/sunreform-mansion-app</span>
+          <span class="btn btn-primary">開く ↗</span>
+        </div>
+      </a>
+
+      <a class="card interactive" href="https://s707.tail24ba29.ts.net/" target="_blank" rel="noopener">
+        <div class="card-header">
+          <div class="icon">&#x1F4CB;</div>
+          <span class="chip chip-success">稼働中</span>
+        </div>
+        <div class="card-title">プロジェクトランチャー</div>
+        <div class="card-desc">進行中プロジェクトの横断管理ダッシュボード。Claude Codeセッション再開・メモ・ステータス管理・KPIダッシュボード。</div>
+        <div class="card-footer">
+          <span class="card-access">社内VPN (Tailscale) 経由でアクセス</span>
+          <span class="btn btn-primary">開く ↗</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- AIツール -->
+  <section>
+    <div class="section-title">AIツール</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">&#x1F916;</div>
+          <span class="chip chip-success">稼働中</span>
+        </div>
+        <div class="card-title">SUN-Bo (社内 AI アシスタント)</div>
+        <div class="card-desc">ChatWork グループチャットから呼び出せる社内AI。就業規則・FAQ・物件情報を横断検索。Vertex AI + Gemini 搭載。</div>
+        <div class="card-footer">
+          <span class="card-access">ChatWork の「SUN-Bo学習ルーム」からアクセス</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">&#x1F4C4;</div>
+          <span class="chip chip-primary">ローカルツール</span>
+        </div>
+        <div class="card-title">選択休日シミュレーター</div>
+        <div class="card-desc">産休・育休明けの勤務形態（年間休日 100/110/120日 × 時短）をシミュレーション。社員名を指定するとPDFを自動生成。Kintone 連携。</div>
+        <div class="card-footer">
+          <span class="card-access">WSL: <code>python3 generate.py "氏名"</code></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- バックグラウンド自動化 -->
+  <section>
+    <div class="section-title">バックグラウンド自動化</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">&#x2709;&#xFE0F;</div>
+          <span class="chip chip-info">自動実行</span>
+        </div>
+        <div class="card-title">Outlook Triage</div>
+        <div class="card-desc">受信メールを1日3回（6/12/18時）AI仕分け。要返信メールは下書きを自動生成し、ChatWork マイチャットに通知。平日のみ稼働。</div>
+        <div class="card-footer">
+          <div class="auto-badge">Windowsタスクスケジューラで 6:00 / 12:00 / 18:00 に自動実行</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">&#x1F4E6;</div>
+          <span class="chip chip-info">自動実行</span>
+        </div>
+        <div class="card-title">トヨクモ請求書転送</div>
+        <div class="card-desc">毎月1日 09:00 に kintoneapp.com から最新請求書を自動ダウンロード。担当者（森 由香）へ ChatWork DM で添付送信。</div>
+        <div class="card-footer">
+          <div class="auto-badge">Windowsタスクスケジューラで毎月1日 9:00 に自動実行</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">&#x1F3E0;</div>
+          <span class="chip chip-info">自動実行</span>
+        </div>
+        <div class="card-title">マンション申し送り収集 (SUN-Bo)</div>
+        <div class="card-desc">毎時 ChatWork の返信を自動キャプチャし、マンション申し送り情報を Firestore に蓄積。差分検出・通知。Cloud Run Job で稼働。</div>
+        <div class="card-footer">
+          <div class="auto-badge">Cloud Scheduler で毎時 0 分に自動実行 (GCP asia-northeast1)</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
